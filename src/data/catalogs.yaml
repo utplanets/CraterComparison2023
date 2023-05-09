@@ -54,9 +54,8 @@ Salamuniccar:
   download: True
   function: Salamuniccar
 irH1k:
-  filename : irH1k.csv
-  url : internal_source
+  filename : irH1k_final.csv
+  url : https://borealisdata.ca/api/access/datafile/465920
   xyz : ["Long","Lat","Diameter (km)"]
-  download : false
+  download : True
   sha256: f7fee5427dfa52662f0c3235ed46d14021b4c542abca29e28eba8ed1b63deb04
-  message : "Download from BorealisData"
