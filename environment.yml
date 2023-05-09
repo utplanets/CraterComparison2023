@@ -1,0 +1,25 @@
+name: deepmars
+channels:
+  - scitools
+  - chrislee
+  - defaults
+  - conda-forge
+dependencies:
+  - scipy
+  - numpy
+  - matplotlib
+  - scikit-learn
+  - h5py
+  - ipykernel
+  - ipywidgets
+  - tqdm
+  - joblib
+  - pandas
+  - pytables
+  - openpyxl
+  - pyyaml
+  - palettable
+  - Jinja2
+  - click
+  - numba
+  - nbconvert

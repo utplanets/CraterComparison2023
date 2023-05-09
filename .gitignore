@@ -1,0 +1,11 @@
+*.ipynb_checkpoints
+/*.pdf
+
+# Figure output
+src/tex/figures/*
+
+# Miscellaneous
+__pycache__
+*.synctex.gz
+
+*~
