@@ -1,0 +1,62 @@
+DeepMars1Mars:
+  filename : deepmars_marstrained.tsv
+  url : https://borealisdata.ca/api/access/datafile/75046
+  xyz: ["Long", "Lat", "Diameter (km)"]
+  sha256: "eb5a155f493995bfb28e1bdc05d1d1d8ddd8066e71822343640b73175cc1c2df"
+  download: True
+DeepMars1Moon:
+  filename : deepmars_moontrained.tsv
+  url : https://borealisdata.ca/api/access/datafile/75047
+  xyz : ["Long","Lat","Diameter (km)"]
+  sha256: "8a61497e33969494e773655f44189be738711f612d9a6804c7fdca062d3a065c"
+  download: True
+DeepMars2:
+  filename : deepmars2_catalog.tsv
+  url : https://borealisdata.ca/api/access/datafile/100988
+  xyz : ["Long","Lat","Diameter (km)"]
+  sha256 : "63acd86f229d06f97b71c6a711ce7547f7ff32af7b971555acfbb3a25a20c377"
+  download: True
+Benedix:
+  filename : ess2_502-sup-0002-2019ea001005-tdata_set_si1.csv
+  url: "https://agupubs.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1029%2F2019EA001005&file=ess2_502-sup-0002-2019EA001005-TData_Set_SI1.csv"
+  xyz: ["longitude","latitude","diameter (km)"]
+  sha256: "9d171b018287a26a8b4f5264dfbed53a6ea42786282703e072583cf30c686b3b"
+  download: False
+  message: "You need to download this dataset from the paper website"
+BeRescaled:
+  filename : ess_rescaled.csv
+  url: "generated"
+  xyz: ["longitude","latitude","diameter (km)"]
+  sha256: ""
+  download: False
+  message: "This dataset is generated from the Benedix dataset"
+Lagain:
+  filename : Lagain_GSA_database.zip
+  url : https://zenodo.org/record/3633594/files/Lagain_GSA_database.zip?download=1
+  xyz : ["Long","Lat","Diameter (km)"]
+  processing : lagain
+  sha256: 6886def58c1c26220a353e390b934a408ccf1cb739aebe4c20e5f5ca29cd746c
+  download: True
+  function: Lagain
+Robbins:
+  filename: RobbinsCraters_20121016.zip
+  url : https://astropedia.astrogeology.usgs.gov/download/Mars/Research/Craters/RobbinsCraterDatabase_20120821.zip
+  xyz : ["LONGITUDE_CIRCLE_IMAGE","LATITUDE_CIRCLE_IMAGE","DIAM_CIRCLE_IMAGE"]
+  sha256: "51d614b4bb7c8961da986f3427ca5ae39722499f148ab45fbc953a8307c543b2"
+  download: True
+  function : Robbins
+Salamuniccar:
+  filename: GoranSalamuniccar_MarsCraters.zip
+  url : https://astropedia.astrogeology.usgs.gov/download/Mars/Research/Craters/GoranSalamuniccar_MarsCraters.zip
+  xyz : ["x","y","D[km]"]
+  note : processed
+  sha256: "e2c5484e3f48acf08c0a0c25728a7d33e7446b5eccc4ba788b5ebfe69a289e68"
+  download: True
+  function: Salamuniccar
+irH1k:
+  filename : irH1k.csv
+  url : internal_source
+  xyz : ["Long","Lat","Diameter (km)"]
+  download : false
+  sha256: f7fee5427dfa52662f0c3235ed46d14021b4c542abca29e28eba8ed1b63deb04
+  message : "Download from BorealisData"
