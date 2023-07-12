@@ -544,7 +544,7 @@ def plot_bias(data):
         else:
             r[1][:]=1
         
-        axs[1].plot(r[0],r[1],label=k,color=colors[k],alpha=1 if k.startswith("Be") else 0.5)
+        axs[1].plot(r[0],r[1],label=labels.get(k,k),color=colors[k],alpha=1 if k.startswith("Be") else 0.5)
     for k in plot_names:
         q=data[f"/Benedix/{k}_Robbins/without_duplicates"]
         q["alat"] = np.abs(q["Lat"])
@@ -621,11 +621,12 @@ def plot_distance(catalogs, keys,ranges=None, override_method=None,
 
         for k,a in zip(ranges.keys(),axs):
             myname = name.split("/")[2].split("_")[0]
-            delta[k].hist(bins=ranges[k],ax=a,color=colors[myname],label=myname,histtype='step')
+            delta[k].hist(bins=ranges[k],ax=a,color=colors[myname],label=labels.get(myname,myname),histtype='step')
 
             a.set_yscale('log')
             a.legend(frameon=False, ncol=2, loc=(0.10,0.7))
-            a.set_xlabel(f"{k} error (%)")
+            kname = labels.get(k,k)
+            a.set_xlabel(f"{kname} error (%)")
             a.set_xlim(ranges[k].min(), ranges[k].max())
         axs[0].set_ylabel("Number of matches")
     return delta
@@ -653,19 +654,19 @@ def plot_iou_density(data, keys, tablename="without_duplicates",iou_range=None):
             a=data[f"/{method}/{name}/{tablename}"]
             myname = name.split("_")[0]
             for ax in [ax1,ax2]:
-                a["iou"].hist(bins=iou_range,ax=ax, color=colors[myname], label=myname, histtype='step',density=True,ls=ls)
+                a["iou"].hist(bins=iou_range,ax=ax, color=colors[myname], label=labels.get(myname,myname), histtype='step',density=True,ls=ls)
                 if method=="Benedix":
                     yloc = sum(a["iou"]==0)*100/len(a["iou"])
                     ax.arrow(0.1*(-1)**lr,yloc,(-1)**(lr+1)*0.08,0, length_includes_head=True, head_length=0.01, color=colors[myname])
                     print(yloc, (-1)**lr)
        # ax.set_yscale('log')
         if method=="Lee":
-            ax2.legend(frameon=False, ncol=2)
+            ax2.legend(frameon=False, ncol=1, fontsize=9, loc=(0.5,-0.1))
         ax1.set_xlabel("IOU")
         ax1.set_ylabel("Density")
-        ax1.set_ylim(0,7)
-        ax2.set_ylim(10,100)
-        ax2.set_yticks([10,40,70,100])
+        ax1.set_ylim(0,6.5)
+        ax2.set_ylim(10,20)
+        ax2.set_yticks([10,15,20])
         
         ax2.spines['bottom'].set_visible(False)
         ax1.spines['top'].set_visible(False)
@@ -679,10 +680,10 @@ def plot_iou_density(data, keys, tablename="without_duplicates",iou_range=None):
         kwargs = dict(transform=ax2.transAxes, color='k', clip_on=False)
         ax2.plot((-d, +d), (-d, +d), **kwargs)        # top-left diagonal
         ax2.plot((1 - d, 1 + d), (-d, +d), **kwargs)  # top-right diagonal
-
+        r = 1/3
         kwargs.update(transform=ax1.transAxes)  # switch to the bottom axes
-        ax1.plot((-d, +d), (1 - d, 1 + d), **kwargs)  # bottom-left diagonal
-        ax1.plot((1 - d, 1 + d), (1 - d, 1 + d), **kwargs)  # bottom-right diagonal
+        ax1.plot((-d, +d), (1 - d*r, 1 + d*r), **kwargs)  # bottom-left diagonal
+        ax1.plot((1 - d, 1 + d), (1 - d*r, 1 + d*r), **kwargs)  # bottom-right diagonal
 
 def plot_metric_vs_Lat(data, catalogs, keys,ranges=None,ls="-",alpha=1, axs=None,precision=False,**limits):
     """Plots metric (recall and precision) against latitude.
@@ -731,11 +732,11 @@ def plot_metric_vs_Lat(data, catalogs, keys,ranges=None,ls="-",alpha=1, axs=None
             mn = grps.mean()
             st = grps.std()
             myname = name.split("/")[2].split("_")[0]
-            a.errorbar(mn[range_key],mn["TPR"],label=myname,ls=ls,color=colors[myname],alpha=alpha)
+            a.errorbar(mn[range_key],mn["TPR"],label=labels.get(myname,myname),ls=ls,color=colors[myname],alpha=alpha)
             
-            a.set_xlabel(range_key)
+            a.set_xlabel(labels.get(range_key, range_key))
             a.set_xlim(plot_limits[range_key])
-    axs[0].set_ylabel("Recall")
+    axs[0].set_ylabel("Recall or Precision")
 
     if legend:
         axs[2].legend(frameon=False,ncol=2)
@@ -749,7 +750,8 @@ def naive_csfd(catalogs,dlim=(1.5,100),**limits):
     filters in space, bins into 20 log bins per decade.
     """
     
-    plt.figure(figsize=(6,3))
+    plt.figure(figsize=(3,6))
+    plt.gca().set_aspect('equal')
     for name in catalogs.keys():
         cat = filter_data(catalogs[name],dlim=dlim,**limits)
         L,H = np.log10(dlim[0]),np.log10(dlim[1])
@@ -759,11 +761,11 @@ def naive_csfd(catalogs,dlim=(1.5,100),**limits):
         H = (L+N*D)
         c,m = (cat.groupby(pd.cut(cat["Diameter (km)"],np.logspace(L,H,N))).count()["Diameter (km)"],
                cat.groupby(pd.cut(cat["Diameter (km)"],np.logspace(L,H,N))).mean()["Diameter (km)"])
-        plt.plot(m,c,marker='|',label=name,color=colors[name],alpha=0.76)
+        plt.plot(m,c,marker='|',label=labels.get(name,name),color=colors[name],alpha=0.76)
     plt.yscale('log')
     plt.xscale('log')
     plt.xlim(dlim)
-    plt.legend(ncol=3, frameon=True)
+    plt.legend(ncol=1, frameon=True)
     plt.grid()
     plt.xlabel("Diameter (km)")
     plt.ylabel("Count")

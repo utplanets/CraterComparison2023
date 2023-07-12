@@ -51,6 +51,7 @@ def read_catalog(filename, input_dims, raw=False,function=None,**kwargs):
         data = pd.read_csv(filename, **kwargs)
     if raw:
         return data
+    print(filename, data.columns)
     data = data[input_dims].copy()
     output_dims=["Long","Lat","Diameter (km)"]
     data = data.rename(columns=dict(zip(input_dims, output_dims)))
